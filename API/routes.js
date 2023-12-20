@@ -19,7 +19,7 @@ const routes = [
         method: 'POST',
         path: '/stories',
         handler: stories
-    },
+    }
 ];
 
 module.exports = routes;

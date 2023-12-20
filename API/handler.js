@@ -1,42 +1,43 @@
 const { nanoid } = require('nanoid');
 const user = [];
+const story = [];
 
-const register = (request, h) => {
-    const {
-        name, email, password
-    } = request.payload;
-    const emailIndex = user.findIndex((users) => users.email === email);
+const admin = require('firebase-admin');
 
-    if (emailIndex !== -1) {
-        const response = h.response({
-            "error": "true",
-            "message": "User not Created. Email used."
-        });
-        response.code(400);
-        return response;
+const serviceAccount = require('./serviceAccountKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://capstone-tukkantuk-default-rtdb.asia-southeast1.firebasedatabase.app" // harus sesuain
+});
+
+const db = admin.database();
+
+
+const register = async (request, h) => {
+    const { name, email, password } = request.payload;
+    const userRef = db.ref('users');
+    const existingUser = await userRef.orderByChild('email').equalTo(email).once('value');
+
+    if (existingUser.exists()) {
+        return h.response({ "error": true, "message": "User not Created. Email used." }).code(400);
     }
-    const id = nanoid();
-    const newUser = {
-        id,
-        name,
-        email,
-        password
-    };
-    user.push(newUser);
-    const response = h.response({
-        "error": "false",
-        "message": "User Created"
-    });
-    response.code(200);
-    return response;
-}
+
+    const newUserRef = userRef.push();
+    await newUserRef.set({ name, email, password });
+
+    return h.response({ "error": false, "message": "User Created" }).code(200);
+};
+
 
 const login = (request, h) => {
     const {
         email, password
     } = request.payload;
 
-    const userAccount = user.filter((users) => users.email == email)[0];
+    const userRef = db.ref('users');
+
+    const userAccount = userRef.filter((users) => users.email == email)[0];
 
     if (userAccount === undefined || userAccount.password !== password){
         const response = h.response({
@@ -61,11 +62,29 @@ const login = (request, h) => {
     }
 }
 
-const stories = (request, h) => {
+const stories = async (request, h) => {
     const {
         description, photo, lat, lon
     } = request.payload;
+
+    const storyRef = db.ref('stories');
+
+    if (!photo) {
+        const response = h.response({
+            "error": "true",
+            "message": "No Photo"
+        });
+        response.code(400);
+        return response;
+    }
+    const idStory = nanoid();
+
+    const newStoryRef = storyRef.push();
+    await newStoryRef.set({ idStory, description, photo, lat, lon});
+
+    return h.response({ "error": false, "message": "success" }).code(200);
 }
+
 
 module.exports = {
     register,
