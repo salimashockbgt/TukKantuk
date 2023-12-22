@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "19972541801",
+    "project_id": "capstone-tukkantuk",
+    "storage_bucket": "capstone-tukkantuk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19972541801:android:340a3a3a1c2abeefb081f8",
+        "android_client_info": {
+          "package_name": "com.example.tukkantuk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "19972541801-i1qas4b40encb973188ikrgf9hfarfej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tukkantuk",
+            "certificate_hash": "fad90c6cae2078b3fdbe1c79bdce3243ae1723a8"
+          }
+        },
+        {
+          "client_id": "19972541801-3insah9dlpakskdl2pqli6bg99r4ar9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB70v6Fzo9pQkH51TL1v7UHG67c8rnTfxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "19972541801-3insah9dlpakskdl2pqli6bg99r4ar9j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
